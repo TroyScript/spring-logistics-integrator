@@ -13,7 +13,7 @@ public class ShippingService {
 
     public ShippingResponse getShippingResponse(String cep) {
         AddressResponseDTO address = viaCepClient.getAddress(cep);
-        double shippingCost = 0.0;
+        double shippingCost = calculateShippingCost(address.uf());
 
         return new ShippingResponse(
                 address.localidade(),
@@ -24,6 +24,11 @@ public class ShippingService {
     }
 
     private double calculateShippingCost(String uf) {
-        return 0.0; // TODO: Shipping cost logic
+        return switch (uf) {
+            case "SP", "RJ", "MG", "ES" -> 10.00;
+            case "PR", "SC", "RS" -> 15.00;
+            case "MT", "MS", "GO", "DF" -> 20.00;
+            default -> 25.00;
+        };
     }
 }
