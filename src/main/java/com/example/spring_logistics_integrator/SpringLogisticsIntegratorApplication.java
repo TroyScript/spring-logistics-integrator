@@ -2,8 +2,10 @@ package com.example.spring_logistics_integrator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
+@EnableFeignClients
 public class SpringLogisticsIntegratorApplication {
 
 	public static void main(String[] args) {
