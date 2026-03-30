@@ -2,7 +2,10 @@ package com.example.spring_logistics_integrator.service;
 
 import com.example.spring_logistics_integrator.client.ViaCepClient;
 import com.example.spring_logistics_integrator.dto.AddressResponseDTO;
+import com.example.spring_logistics_integrator.exceptions.CepNotFoundException;
+import com.example.spring_logistics_integrator.exceptions.InvalidCepException;
 import com.example.spring_logistics_integrator.models.ShippingResponse;
+import com.example.spring_logistics_integrator.utils.CepUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +15,11 @@ public class ShippingService {
     private final ViaCepClient viaCepClient;
 
     public ShippingResponse getShippingResponse(String cep) {
+        if (!CepUtils.isValid(cep)) throw new InvalidCepException(cep);
+
         AddressResponseDTO address = viaCepClient.getAddress(cep);
+        if (address.notFound()) throw new CepNotFoundException(cep);
+
         double shippingCost = calculateShippingCost(address.uf());
 
         return new ShippingResponse(
