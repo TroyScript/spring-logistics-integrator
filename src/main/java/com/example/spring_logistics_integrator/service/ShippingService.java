@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ShippingService {
-    ViaCepClient viaCepClient;
+    private final ViaCepClient viaCepClient;
 
     public ShippingResponse getShippingResponse(String cep) {
         AddressResponseDTO address = viaCepClient.getAddress(cep);
